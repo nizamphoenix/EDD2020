@@ -5,126 +5,6 @@ Created on Wed Nov 21 13:24:24 2018
 
 @author: ead2019
 """
-
-def read_img(imfile):
-    import cv2
-    return cv2.imread(imfile)[:,:,::-1]
-
-
-def read_boxes(txtfile):
-
-    import numpy as np
-    lines = []
-
-    with open(txtfile, "r") as f:
-        for line in f:
-            #print('line:',line)
-            line = line.strip()
-            line_list = line.split()
-            try:
-                cls = line_list[4]
-                coords = line_list[:4]
-                val = None
-                if cls=='BE':
-                    val=0
-                elif cls=='suspicious':
-                    val=1
-                elif cls=='HGD':
-                    val=2
-                elif cls=='cancer':
-                    val=3
-                elif cls=='polyp':
-                    val=4
-                newline=[]
-                newline.append(str(val))
-                newline.extend(coords)
-                box = np.hstack(newline).astype(np.float)
-                box[0] = int(box[0])
-                print("coordinates:",box)
-                lines.append(box)
-            except:
-                print('ERRRRRRRRRRR')
-    return np.array(lines)
-
-
-
-
-
-def plot_boxes(ax, boxes, labels):
-    
-    for b in boxes:
-        col = None
-        cls, x1, y1, x2, y2 = b
-        if cls==0:
-            col='cyan'
-        elif cls==1:
-            col='blue'
-        elif cls==2:
-            col='green'
-        elif cls==3:
-            col='red'
-        elif cls==4:
-            col='black'
-        x1=int(np.clip(x1, 0, 224-1))
-        x2=int(np.clip(x2, 0, 224-1))
-        y1=int(np.clip(y1, 0, 224-1))
-        y2=int(np.clip(y2, 0, 224-1))
-        ax.plot([x1,x2,x2,x1,x1], [y1,y1,y2,y2,y1],lw=2, color=col)
-    return []
-
-
-def read_obj_names(textfile):
-    
-    import numpy as np 
-    classnames = []
-    
-    with open(textfile) as f:
-        for line in f:
-            line = line.strip('\n')
-            if len(line)>0:
-                classnames.append(line)
-            
-    return np.hstack(classnames)
-
-
-if __name__=="__main__":
-    
-    """
-    Example script to read and plot bounding box  (which are provided in <x1,y1,x2,y2> (VOC)format)
-    """
-    import pylab as plt
-    import sys
-    imgfile='./EDD2020/EDD2020_release-I_2020-01-15/originalImages/EDD2020_ACB0001.jpg'
-    bboxfile='./EDD2020/EDD2020_release-I_2020-01-15/bbox/EDD2020_ACB0001.txt'
-    masksfile1='./EDD2020/EDD2020_release-I_2020-01-15/masks/EDD2020_ACB0001_BE.tif'
-    masksfile2='./EDD2020/EDD2020_release-I_2020-01-15/masks/EDD2020_ACB0001_suspicious.tif'
-
-    classfile = './EDD2020/EDD2020_release-I_2020-01-15/class_list.txt'
-    classes = read_obj_names(classfile)
-    img = read_img(imgfile)
-
-    img = resize_image_to_square(img, 224, pad_cval=0)
-    mask1 = read_img(masksfile1)
-    mask2 = read_img(masksfile2)
-    boxes = read_boxes(bboxfile)
-    mask1 = np.array(mask1)
-    mask2 = np.array(mask2)
-    #boxes=convert_boxes(boxes,['0','1','2','3','4'],'GT',img.shape[:2])
-    #boxes=boxes.astype(np.float)
-    fig, ax = plt.subplots()
-    plot_boxes(ax, boxes, classes)
-    _, bx = plt.subplots(nrows=1,ncols=2)
-    bx[0].imshow(mask1)
-    mask1 = resize_image_to_square(mask1, 224, pad_cval=0)
-    bx[1].imshow(mask1)
-    _, cx = plt.subplots(nrows=1,ncols=2)
-    cx[0].imshow(mask2)
-    mask2 = resize_image_to_square(mask2, 224, pad_cval=0)
-    cx[1].imshow(mask2)
-    plt.show()
-
-
-
 def convert_boxes(boxes, class_names, datatype, imgshape):
     nrows, ncols = imgshape
     data = []
@@ -193,4 +73,134 @@ def convert_boxes(boxes, class_names, datatype, imgshape):
     else:
         return data
 
+def read_img(imfile):
+    import cv2
+    return cv2.imread(imfile)[:,:,::-1]
 
+
+def read_boxes(txtfile):
+
+    import numpy as np
+    lines = []
+
+    with open(txtfile, "r") as f:
+        for line in f:
+            #print('line:',line)
+            line = line.strip()
+            line_list = line.split()
+            try:
+                cls = line_list[4]
+                coords = line_list[:4]
+                val = None
+                if cls=='BE':
+                    val=0
+                elif cls=='suspicious':
+                    val=1
+                elif cls=='HGD':
+                    val=2
+                elif cls=='cancer':
+                    val=3
+                elif cls=='polyp':
+                    val=4
+                newline=[]
+                newline.append(str(val))
+                newline.extend(coords)
+                box = np.hstack(newline).astype(np.float)
+                box[0] = int(box[0])
+                #print("coordinates:",box)
+                lines.append(box)
+            except:
+                print('ERRRRRRRRRRR')
+    return np.array(lines)
+
+
+
+
+def plt_rectangle(plt,label,x1,y1,x2,y2):
+  '''  
+  plt   : matplotlib.pyplot object
+  label : string containing the object class name
+  x1    : top left corner x coordinate
+  y1    : top left corner y coordinate
+  x2    : bottom right corner x coordinate
+  y2    : bottom right corner y coordinate
+  '''
+  linewidth = 3
+  color = "yellow"
+  plt.text(x1,y1,label,fontsize=20,backgroundcolor="magenta")
+  plt.plot([x1,x1],[y1,y2], linewidth=linewidth,color=color)
+  plt.plot([x2,x2],[y1,y2], linewidth=linewidth,color=color)
+  plt.plot([x1,x2],[y1,y1], linewidth=linewidth,color=color)
+  plt.plot([x1,x2],[y2,y2], linewidth=linewidth,color=color)
+
+def plot_boxes(ax, boxes, labels):
+    for b in boxes:
+        col = None
+        cls, x1, y1, x2, y2 = b
+        if cls==0:
+            col='cyan'
+        elif cls==1:
+            col='blue'
+        elif cls==2:
+            col='green'
+        elif cls==3:
+            col='red'
+        elif cls==4:
+            col='black'
+        print(x1,y1,x2,y2)
+        y1=512-y1
+        y2=512-y2
+        print(x1,y1,x2,y2)
+        x1=int(np.clip(x1, 0, 224-1))
+        x2=int(np.clip(x2, 0, 224-1))
+        y1=int(np.clip(y1, 0, 224-1))
+        y2=int(np.clip(y2, 0, 224-1))
+        print(x1,y1,x2,y2)
+        ax.plot([x1,x2,x2,x1,x1], [y1,y1,y2,y2,y1],lw=2, color=col)
+    return []
+
+
+def read_obj_names(textfile):
+    
+    import numpy as np 
+    classnames = []
+    
+    with open(textfile) as f:
+        for line in f:
+            line = line.strip('\n')
+            if len(line)>0:
+                classnames.append(line)
+            
+    return np.hstack(classnames)
+
+
+if __name__=="__main__":
+    
+    """
+    Example script to read and plot bounding box  (which are provided in <x1,y1,x2,y2> (VOC)format)
+    """
+    import pylab as plt
+    import sys
+    imgfile='./EDD2020/EDD2020_release-I_2020-01-15/originalImages/EDD2020_ACB0001.jpg'
+    bboxfile='./EDD2020/EDD2020_release-I_2020-01-15/bbox/EDD2020_ACB0001.txt'
+    masksfile1='./EDD2020/EDD2020_release-I_2020-01-15/masks/EDD2020_ACB0001_BE.tif'
+    masksfile2='./EDD2020/EDD2020_release-I_2020-01-15/masks/EDD2020_ACB0001_suspicious.tif'
+    classfile = './EDD2020/EDD2020_release-I_2020-01-15/class_list.txt'
+
+    
+    img = read_img(imgfile)
+    img = resize_image_to_square(img, 224, pad_cval=0)
+    boxes = read_boxes(bboxfile)
+    mask1 = read_img(masksfile1)
+    mask1 = resize_image_to_square(mask1, 224, pad_cval=0)
+    mask2 = read_img(masksfile2)
+    mask2 = resize_image_to_square(mask2, 224, pad_cval=0)
+    classes = read_obj_names(classfile)
+    #boxes=convert_boxes(boxes,['0','1','2','3','4'],'GT',img.shape[:2])
+    #boxes=boxes.astype(np.float)
+    fig, ax = plt.subplots(nrows=1,ncols=3)
+    plot_boxes(ax[0], boxes, classes)
+    ax[0].imshow(img)
+    ax[1].imshow(mask1)
+    ax[2].imshow(mask2)
+    plt.show()
