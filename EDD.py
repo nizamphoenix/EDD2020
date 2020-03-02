@@ -94,5 +94,5 @@ class EDD(Dataset):
         self.labels = all_labels
         
         
-        
+#Add the custom loadimage and loadmasks function
     
