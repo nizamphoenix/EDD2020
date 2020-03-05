@@ -1,7 +1,10 @@
 from torch.utils.data import Dataset
 from torchvision import transforms
-from torch.utils.data import DataLoader
-
+from util import load_set
+import torch
+import os
+import numpy as np
+import glob
 
 class EDD(Dataset):
     '''
@@ -19,9 +22,9 @@ class EDD(Dataset):
         img = self.original_images[index]
         mask = self.masks[index]
         label = self.labels[index]
-        num_masks = len(mask)
         boxes = []
-        for i in range(num_masks):
+        for i in range(len(mask)):
+            mask[i] = np.asarray(mask[i])
             pos  = np.where(mask[i])
             xmin = np.min(pos[1])
             xmax = np.max(pos[1])
@@ -30,22 +33,23 @@ class EDD(Dataset):
             boxes.append([xmin, ymin, xmax, ymax])
 
         boxes = torch.as_tensor(boxes, dtype=torch.float32)
-        label = torch.ones(label, dtype=torch.int64)
+        label = torch.as_tensor(label, dtype=torch.int64)
         mask = torch.as_tensor(mask, dtype=torch.uint8)
-
         image_id = torch.tensor([index])
         
+        if self.transform:
+            img = self.transform(img)
+        else:
+            transform_to_tensor = transforms.Compose([transforms.ToTensor(),])
+            img = transform_to_tensor(img)
+            
+            
         target = {}
         target["boxes"] = boxes
         target["labels"] = label
         target["masks"] = mask
         target["image_id"] = image_id
 
-        if self.transform:
-            img = self.transform(img)
-        else:
-            transform_to_tensor = transforms.Compose([transforms.ToTensor(),])
-            img = transform_to_tensor(img)
         return img, target
 
     def __len__(self):
@@ -57,14 +61,14 @@ class EDD(Dataset):
         It sets  self.original_images and self.masks to processed images at the end.
         '''
         images_path = os.path.join(global_path, 'originalImages')
-        all_images, img_filenames = load_set(folder=images_path)
+        all_images, img_filenames = load_set(folder=images_path,is_mask=False)
         img_filenames2 = [os.path.split(fn)[-1] for fn in img_filenames]
         img_filenames_wo_ext = [fn[:fn.rfind('.')] for fn in img_filenames2]
 
         classes = ['BE','suspicious','HGD','cancer','polyp']
 
         masks_path = os.path.join(global_path, 'masks')
-        all_masks, mask_filenames = load_set(folder=masks_path)
+        all_masks, mask_filenames = load_set(folder=masks_path,is_mask=True)
         mask_filenames2 = [os.path.split(fn)[-1] for fn in mask_filenames]
         mask_filenames_wo_ext = [fn[:fn.rfind('.')] for fn in mask_filenames2]
         temp_dict={}#contains 502 mask filenames as keys and respective masks as values
@@ -83,16 +87,13 @@ class EDD(Dataset):
                 except KeyError:
                     temp_labels.append(0)
                     continue
-            all_masks.append(np.array(temp_masks))
+            all_masks.append(temp_masks)#appending the images directly
+            #all_masks.append(np.array(temp_masks))
             all_labels.append(temp_labels)
-        print('len(all_masks),len(all_labels)=>',len(all_masks),len(all_labels))
-        print('type(all_images[1]),all_images[1].shape =>',type(all_images[1]),all_images[1].shape)
-        print('type(all_masks[1]),all_masks[1].shape =>',type(all_masks[1]),all_masks[1].shape)
-        print('all_labels[1] =>',all_labels[1])
+#         print('len(all_images):',len(all_images),'len(all_masks):',len(all_masks),' len(all_labels):',len(all_labels))
+#         print('type(all_images[1]):',type(all_images[1]),' all_images[1].shape:',all_images[1].shape)
+#         print('type(all_masks[1]):',type(all_masks[1]),'all_masks[1].shape:',all_masks[1].shape)
+#         print('all_labels[1]: ',all_labels[1])
         self.masks = all_masks
         self.original_images = all_images
         self.labels = all_labels
-        
-        
-#Add the custom loadimage and loadmasks function
-    
