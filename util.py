@@ -76,3 +76,15 @@ def resize_images(src,dest,image_size):
             print('><'*20)
         except:
             print('Could not save image.')
+            
+def display_image(img):
+    '''
+    using cv2.imshow("image", img)
+    cv2.waitKey(); 
+    crashes notebooks
+
+    '''
+    from matplotlib import pyplot as plt
+    %matplotlib inline
+    plt.imshow(img,)
+    plt.show()
