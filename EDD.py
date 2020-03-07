@@ -60,14 +60,14 @@ class EDD(Dataset):
         Function to process images and their respective masks.
         It sets  self.original_images and self.masks to processed images at the end.
         '''
-        images_path = os.path.join(global_path, 'originalImages')
+        images_path = os.path.join(global_path, 'resized_images')
         all_images, img_filenames = load_set(folder=images_path,is_mask=False)
         img_filenames2 = [os.path.split(fn)[-1] for fn in img_filenames]
         img_filenames_wo_ext = [fn[:fn.rfind('.')] for fn in img_filenames2]
 
         classes = ['BE','suspicious','HGD','cancer','polyp']
 
-        masks_path = os.path.join(global_path, 'masks')
+        masks_path = os.path.join(global_path, 'resized_masks')
         all_masks, mask_filenames = load_set(folder=masks_path,is_mask=True)
         mask_filenames2 = [os.path.split(fn)[-1] for fn in mask_filenames]
         mask_filenames_wo_ext = [fn[:fn.rfind('.')] for fn in mask_filenames2]
