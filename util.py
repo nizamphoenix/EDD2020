@@ -38,7 +38,7 @@ def resize_images(src,dest,image_size):
 
     for img_name in sorted(os.listdir(path)):
         try:
-            img = cv2.imread(os.path.join(path, img_name))
+            img = cv2.imread(os.path.join(path, img_name))#[:,:,::-1]for RGB
 
             h, w = img.shape[:2]
             a1 = w/h
