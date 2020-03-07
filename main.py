@@ -54,7 +54,13 @@ def get_edd_loader(path,validation_split=.25,shuffle_dataset=True):
 def main():
   np.random.seed(42)
   #seting up the data set
-  loader = get_edd_loader('./EDD2020/EDD2020_release-I_2020-01-15',validation_split=.25,shuffle_dataset=True)
+  !mkdir ./EDD2020/resized_images
+  resize_images(src='./EDD2020/EDD2020_release-I_2020-01-15/originalImages',dest='./EDD2020/resized_images',image_size=224)
+  !mkdir ./EDD2020/resized_masks
+  resize_images(src='./EDD2020/EDD2020_release-I_2020-01-15/masks',dest='./EDD2020/masks',image_size=224)
+    
+    
+  loader = get_edd_loader('./EDD2020/',validation_split=.25,shuffle_dataset=True)
   
   #using UNet+ResNet combo
   model = UNetResNet(in_channel=3, n_classes=5)
