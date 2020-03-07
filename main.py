@@ -1,5 +1,4 @@
 from torch.utils.data import DataLoader
-import EDD
 from torch.utils.data.sampler import SubsetRandomSampler
 from meditorch.nn.models import UNetResNet
 from torchsummary import summary
@@ -8,6 +7,9 @@ from torch.optim import lr_scheduler
 from meditorch.nn import Trainer
 from meditorch.utils.plot import plot_image_truemask_predictedmask
 import numpy as np
+import EDD
+from util import resize_images
+
 
 def get_edd_loader(path,validation_split=.25,shuffle_dataset=True):
     '''
