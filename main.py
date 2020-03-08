@@ -56,10 +56,11 @@ def get_edd_loader(path,validation_split=.25,shuffle_dataset=True):
 def main():
   np.random.seed(42)
   #seting up the data set
-  !mkdir ./EDD2020/resized_images
-  resize_images(src='./EDD2020/EDD2020_release-I_2020-01-15/originalImages',dest='./EDD2020/resized_images',image_size=224)
-  !mkdir ./EDD2020/resized_masks
-  resize_images(src='./EDD2020/EDD2020_release-I_2020-01-15/masks',dest='./EDD2020/masks',image_size=224)
+  !mkdir ./EDD2020/resized_masks/
+  resize_my_images('./EDD2020/EDD2020_release-I_2020-01-15/masks/','./EDD2020/resized_masks/',is_masks=True)
+  !mkdir ./EDD2020/resized_images/
+  resize_my_images('./EDD2020/EDD2020_release-I_2020-01-15/originalImages/','./EDD2020/resized_images/',is_masks=False)
+  
     
     
   loader = get_edd_loader('./EDD2020/',validation_split=.25,shuffle_dataset=True)
