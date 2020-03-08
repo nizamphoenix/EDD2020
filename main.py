@@ -10,13 +10,11 @@ import numpy as np
 import EDD
 from util import resize_images
 
+np.random.seed(42)
 
 def get_edd_loader(path,validation_split=.25,shuffle_dataset=True):
-    '''
-    v2 loader
-    '''
     dataset = EDD(path)#instantiating the data set.
-    dataset_size = 100#len(dataset)
+    dataset_size = len(dataset)
     indices = list(range(dataset_size))
     split = int(np.floor(validation_split * dataset_size))
     if shuffle_dataset :
@@ -25,34 +23,12 @@ def get_edd_loader(path,validation_split=.25,shuffle_dataset=True):
     train_sampler = SubsetRandomSampler(train_indices)
     valid_sampler = SubsetRandomSampler(val_indices)
     loader={
-        'train':DataLoader(dataset, batch_size=1, sampler=train_sampler),
-        'val':DataLoader(dataset, batch_size= 5,sampler=valid_sampler)
+        'train':DataLoader(dataset, batch_size=2, sampler=train_sampler),
+        'val':DataLoader(dataset, batch_size = 2,sampler=valid_sampler)
     }
     return loader
 
 
-def get_edd_loader(path,validation_split=.25,shuffle_dataset=True):
-    '''
-    v3
-    ref:https://colab.research.google.com/github/pytorch/vision/blob/temp-tutorial/tutorials/torchvision_finetuning_instance_segmentation.ipynb
-    '''
-    dataset = EDD(path)
-    indices = torch.randperm(len(dataset)).tolist()
-    dataset = torch.utils.data.Subset(dataset, indices[:-50])
-    data_loader = torch.utils.data.DataLoader(dataset, batch_size=2, shuffle=True, num_workers=4,collate_fn=utils.collate_fn)
-    dataset_test = torch.utils.data.Subset(dataset, indices[-50:])
-    data_loader_test = torch.utils.data.DataLoader(dataset_test, batch_size=1, shuffle=False, num_workers=4,collate_fn=utils.collate_fn)
-    return data_loader,data_loader_test
-
-
-#MAKING SENSE OF DATA LOADER
-# for a_batch in data_loader:
-#   #a_batch[0]: list of all images in the batch
-#   #a_batch[1]: list of all targets in the batch
-#   print(len(a_batch),len(a_batch[0]),len(a_batch[1]))
-#   for image,target in zip(a_batch[0],a_batch[1]):
-#     print(image.shape,target['masks'].shape)
-#   print('<>'*200)
 def main():
   np.random.seed(42)
   #seting up the data set
