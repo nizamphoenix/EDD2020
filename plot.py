@@ -116,22 +116,6 @@ def read_boxes(txtfile):
 
 
 
-def plt_rectangle(plt,label,x1,y1,x2,y2):
-  '''  
-  plt   : matplotlib.pyplot object
-  label : string containing the object class name
-  x1    : top left corner x coordinate
-  y1    : top left corner y coordinate
-  x2    : bottom right corner x coordinate
-  y2    : bottom right corner y coordinate
-  '''
-  linewidth = 3
-  color = "yellow"
-  plt.text(x1,y1,label,fontsize=20,backgroundcolor="magenta")
-  plt.plot([x1,x1],[y1,y2], linewidth=linewidth,color=color)
-  plt.plot([x2,x2],[y1,y2], linewidth=linewidth,color=color)
-  plt.plot([x1,x2],[y1,y1], linewidth=linewidth,color=color)
-  plt.plot([x1,x2],[y2,y2], linewidth=linewidth,color=color)
 
 def plot_boxes(ax, boxes, labels):
     for b in boxes:
@@ -173,7 +157,25 @@ def read_obj_names(textfile):
             
     return np.hstack(classnames)
 
+def plt_rectangle(plt,label,x1,y1,x2,y2):
+  '''  
+  plt   : matplotlib.pyplot object
+  label : string containing the object class name
+  x1    : top left corner x coordinate
+  y1    : top left corner y coordinate
+  x2    : bottom right corner x coordinate
+  y2    : bottom right corner y coordinate
+  '''
+  linewidth = 3
+  color = "yellow"
+  plt.text(x1,y1,label,fontsize=20,backgroundcolor="magenta")
+  plt.plot([x1,x1],[y1,y2], linewidth=linewidth,color=color)
+  plt.plot([x2,x2],[y1,y2], linewidth=linewidth,color=color)
+  plt.plot([x1,x2],[y1,y1], linewidth=linewidth,color=color)
+  plt.plot([x1,x2],[y2,y2], linewidth=linewidth,color=color)
 
+    
+    
 if __name__=="__main__":
     
     """
@@ -196,8 +198,8 @@ if __name__=="__main__":
     mask2 = read_img(masksfile2)
     mask2 = resize_image_to_square(mask2, 224, pad_cval=0)
     classes = read_obj_names(classfile)
-    #boxes=convert_boxes(boxes,['0','1','2','3','4'],'GT',img.shape[:2])
-    #boxes=boxes.astype(np.float)
+    boxes=convert_boxes(boxes,['0','1','2','3','4'],'GT',img.shape[:2])
+    boxes=boxes.astype(np.float)
     fig, ax = plt.subplots(nrows=1,ncols=3)
     plot_boxes(ax[0], boxes, classes)
     ax[0].imshow(img)
