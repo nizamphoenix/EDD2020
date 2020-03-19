@@ -29,13 +29,6 @@ def convert_boxes(boxes, class_names, datatype, imgshape):
             bbox_bounds = np.hstack([b1,b2,b3,b4]).astype(np.float)
 
             if bbox_bounds.max() < 1.1:
-                # yolo:
-#                x1 = (bbox_bounds[0] - bbox_bounds[2]) / 2. * ncols
-#                y1 = (bbox_bounds[1] - bbox_bounds[3]) / 2. * nrows
-#                x2 = (bbox_bounds[0] + bbox_bounds[2]) / 2. * ncols
-#                y2 = (bbox_bounds[1] + bbox_bounds[3]) / 2. * nrows
-                                
-                # yolo 2 voc
                 x = bbox_bounds[0] * ncols
                 w = bbox_bounds[2] * ncols
                 
@@ -110,7 +103,7 @@ def read_boxes(txtfile):
                 #print("coordinates:",box)
                 lines.append(box)
             except:
-                print('ERRRRRRRRRRR')
+                print('ERROR')
     return np.array(lines)
 
 
