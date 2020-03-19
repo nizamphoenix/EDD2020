@@ -80,7 +80,7 @@ def resize_my_images(src,dst,is_masks):
             if(crop_img.shape[0] == img_size and crop_img.shape[1] == img_size):
 
                 print("Saving image with dims: " + str(crop_img.shape[0]) + "x" + str(crop_img.shape[1]))
-                if not is_masks:
+                if not is_masks:#The slice opereator is supposed to flip an IMAGE
                     cv2.imwrite(dst + img_name, crop_img[:,:,::-1])#SAVING AS RGB FORMAT 
                 elif is_masks:
                     cv2.imwrite(dst + img_name, crop_img)
