@@ -592,3 +592,28 @@ class VideoReader:
         return result
 
 
+    def _read_frame_at_index(self, path, capture, frame_idx):
+        capture.set(cv2.CAP_PROP_POS_FRAMES, frame_idx)
+        ret, frame = capture.read()    
+        if not ret or frame is None:
+            if self.verbose:
+                print("Error retrieving frame %d from movie %s" % (frame_idx, path))
+            return None
+        else:
+            frame = self._postprocess_frame(frame)
+            return np.expand_dims(frame, axis=0), [frame_idx]
+    
+    def _postprocess_frame(self, frame):
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+        if self.insets[0] > 0:
+            W = frame.shape[1]
+            p = int(W * self.insets[0])
+            frame = frame[:, p:-p, :]
+
+        if self.insets[1] > 0:
+            H = frame.shape[1]
+            q = int(H * self.insets[1])
+            frame = frame[q:-q, :, :]
+
+        return frame
