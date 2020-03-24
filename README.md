@@ -4,4 +4,4 @@ The EDD2020 proposes a rich consolidated dataset from various leading research i
 Please refer https://edd2020.grand-challenge.org/  for details.
 
 
-The approach towards addressing the problem involves utilizing unet+resnet to infer segmentations(affected region), and thus bounding-boxes(co-ordinates). The data preparation stage involves resizing the images to 224 x 224 size using OpenCV library, to leverage a myriad of computer vision algorithms for machine learning.
+The approach towards addressing the problem involves utilizing unet+resnet to classify segmentations(affected regions), and thus bounding-boxes(co-ordinates). The data preparation stage involves resizing the images to 224 x 224 size using OpenCV library, to leverage a myriad of computer vision algorithms for machine learning.
