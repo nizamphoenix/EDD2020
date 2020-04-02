@@ -184,15 +184,17 @@ if __name__=="__main__":
 
     
     img = read_img(imgfile)
+    
     img = resize_image_to_square(img, 224, pad_cval=0)
     boxes = read_boxes(bboxfile)
+    boxes=convert_boxes(boxes,['0','1','2','3','4'],'GT',img.shape[:2])
+    boxes=boxes.astype(np.float)
     mask1 = read_img(masksfile1)
     mask1 = resize_image_to_square(mask1, 224, pad_cval=0)
     mask2 = read_img(masksfile2)
     mask2 = resize_image_to_square(mask2, 224, pad_cval=0)
     classes = read_obj_names(classfile)
-    boxes=convert_boxes(boxes,['0','1','2','3','4'],'GT',img.shape[:2])
-    boxes=boxes.astype(np.float)
+
     fig, ax = plt.subplots(nrows=1,ncols=3)
     plot_boxes(ax[0], boxes, classes)
     ax[0].imshow(img)
