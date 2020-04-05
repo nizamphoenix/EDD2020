@@ -25,30 +25,27 @@ def load_set(folder,is_mask,shuffle=False):
 
     
 
-            
-            
-            
 def resize_my_images(src,dst,is_masks):
     '''
-    credits: https://evigio.com/post/resizing-images-into-squares-with-opencv-and-python
+    ref: https://evigio.com/post/resizing-images-into-squares-with-opencv-and-python
     '''
     import cv2
     import os
     import numpy as np
 
-    i = 1
+    i = 0
     img_size = 224
     path = src
     for img_name in sorted(os.listdir(path)):
         img = None
-        print(img_name)
+#         print(img_name)
         try:
             if not is_masks:
                 img = cv2.imread(os.path.join(path, img_name))
                 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             elif is_masks:
                 img = cv2.imread(os.path.join(path, img_name),cv2.IMREAD_GRAYSCALE)
-                
+    
             h, w = img.shape[:2]
             a1 = w/h
             a2 = h/w
@@ -68,7 +65,7 @@ def resize_my_images(src,dst,is_masks):
                 crop_img = r_img[margin:(margin+img_size), 0:img_size]
 
             elif(a1 == a2):
-                print('a1== a2')
+                #print('a1== a2')
                 # if height and width are equal
                 r_img = cv2.resize(img, (img_size, round(img_size * a2)), interpolation = cv2.INTER_AREA)
                 crop_img = r_img[0:img_size, 0:img_size]
@@ -78,25 +75,29 @@ def resize_my_images(src,dst,is_masks):
                 crop_img = r_img[0:img_size, 0:img_size]
 
             if(crop_img.shape[0] == img_size and crop_img.shape[1] == img_size):
-
-                print("Saving image with dims: " + str(crop_img.shape[0]) + "x" + str(crop_img.shape[1]))
-                if not is_masks:#The slice opereator is supposed to flip an IMAGE
-                    cv2.imwrite(dst + img_name, crop_img[:,:,::-1])#SAVING AS RGB FORMAT 
+                if not is_masks:
+                    cv2.imwrite(dst + img_name, crop_img)#SAVING AS RGB FORMAT 
+                    #display_image(crop_img,is_mask=False)
                 elif is_masks:
-                    cv2.imwrite(dst + img_name, crop_img)
+                    #converting masks: tif--->jpg   
+                    cv2.imwrite(dst + img_name.split('.')[0]+'.jpg', crop_img)
+                    #display_image(crop_img,is_mask=True)
+                #print("Saving "+ img_name.split('.')[0] + " with dims: " + str(crop_img.shape))
                 i += 1
             #print('><'*20)
         except:
             print('Could not save image.')
-            
-def display_image(img):
-    '''
-    using cv2.imshow("image", img)
-    cv2.waitKey(); 
-    crashes notebooks
-
-    '''
+    if is_masks:
+        print('no of masks saved: ',i)
+    else:
+        print('no of images saved: ',i)
+        
+def display_image(img,is_mask=False):
     from matplotlib import pyplot as plt
     %matplotlib inline
-    plt.imshow(img,)
-    plt.show()
+    if is_mask:
+        plt.imshow(img,cmap='gray')
+    else:
+        plt.imshow(img)
+    plt.show()            
+            
