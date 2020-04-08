@@ -66,9 +66,6 @@ def convert_boxes(boxes, class_names, datatype, imgshape):
     else:
         return data
 
-def read_img(imfile):
-    import cv2
-    return cv2.imread(imfile)[:,:,::-1]
 
 
 def read_boxes(txtfile):
@@ -105,6 +102,10 @@ def read_boxes(txtfile):
             except:
                 print('ERROR')
     return np.array(lines)
+
+def read_img(imfile):
+    import cv2
+    return cv2.imread(imfile)[:,:,::-1]
 
 
 
