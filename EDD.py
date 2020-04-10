@@ -14,10 +14,7 @@ def load_image(path,is_mask):
 
 def load_set(folder,is_mask,shuffle=False):
     data = []
-    img_list = sorted(glob.glob(os.path.join(folder, '*.png')) + \
-                      glob.glob(os.path.join(folder, '*.jpg')) + \
-                      glob.glob(os.path.join(folder, '*.tif')) + \
-                      glob.glob(os.path.join(folder, '*.jpeg')))
+    img_list = sorted(glob.glob(os.path.join(folder, '*.jpg')))
     if shuffle:
         np.random.shuffle(img_list)
     for img_fn in img_list:
