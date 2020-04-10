@@ -25,6 +25,26 @@ def load_set(folder,is_mask,shuffle=False):
         data.append(img)
     return data, img_list
 
+def flip_img_horizontal(img):
+    '''
+    assuming RGB image is in (h,w,c) format
+    '''
+    return img[:,::-1,:]
+def flip_img_vertical(img):
+    '''
+    assuming RGB image is in (h,w,c) format
+    '''
+    return img[::-1,:,:]
+def flip_mask_horizontal(mask):
+    '''
+    assuming greyscale mask is in (h,w) format
+    '''
+    return mask[:,::-1]
+def flip_mask_vertical(mask):
+    '''
+    assuming greyscale mask is in (h,w) format
+    '''
+    return mask[::-1,:]
 class EDD(Dataset):
     '''
     Class for preparing the EDD2020 dataset
