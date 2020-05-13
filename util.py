@@ -92,7 +92,13 @@ def resize_my_images(src,dst,is_masks):
     else:
         print('no of images saved: ',i)
         
+        
 def display_image(img,is_mask=False):
+    '''
+    To display image/mask 
+    args: img, image
+          is_mask, boolean True if greyscale mask is passed
+    '''
     from matplotlib import pyplot as plt
     %matplotlib inline
     if is_mask:
