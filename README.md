@@ -4,7 +4,9 @@ The EDD2020 proposes a rich consolidated dataset from various leading research i
 Please refer https://edd2020.grand-challenge.org/  for details.  
 
 This is a semantic segmentation task where an image can belong to either of the 5 labels: BE, suspicious, HGD, polyp, cancer.
-The data preparation stage involves resizing the images to 224 x 224 size using OpenCV library, to leverage a myriad of computer vision algorithms for Machine learning.  
+
+The data preparation stage involves resizing erratic & irregular sized images to 224 x 224 size using [this script](https://evigio.com/post/resizing-images-into-squares-with-opencv-and-python).  
+  
 In addition, data augmentation approaches like flipping images horizontally, vertically; utilities in the Albumenations library are leveraged to increase the data size since the original data size is only 386.  
 The current approach towards addressing the problem involves utilizing unet+resnet to identify segmentations(affected regions), and hence bounding-boxes(co-ordinates) thereafter.  
 This approach is currenly giving a score = 0.1312, the more the better.  
