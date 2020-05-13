@@ -23,8 +23,8 @@ def get_edd_loader(path,validation_split=.25,shuffle_dataset=True):
     train_sampler = SubsetRandomSampler(train_indices)
     valid_sampler = SubsetRandomSampler(val_indices)
     loader={
-        'train':DataLoader(dataset, batch_size=2, sampler=train_sampler),
-        'val':DataLoader(dataset, batch_size = 2,sampler=valid_sampler)
+        'train':DataLoader(dataset, batch_size=4, sampler=train_sampler),
+        'val':DataLoader(dataset, batch_size = 4,sampler=valid_sampler)
     }
     return loader
 
@@ -50,7 +50,7 @@ def main():
   trainer.train_model(loader, num_epochs=30)
   
   images, masks = next(iter(loader['val']))
-  #predicting for only a batch of 5 from val set
+  #predicting for only a batch of 4 from val set
   preds = trainer.predict(images)
   plot_image_truemask_predictedmask(images, masks, preds)
 
