@@ -14,7 +14,6 @@ Training involved 2 phases: the first utilised 128 x 128 sized images and traine
 This approach currenly gives a score 0.1312, the more the better. The following are the results obtained where the first column contains original images, the second contains true annotation, and the third contains predictions.  
 The color signifies the correctness of annotation-- among BE,suspicious,HGD,polyp,cancer.
 
-Here are the results  
 ![Image description](./img.png)
 
 Further improvements include using self-supervised learning to improve training.
