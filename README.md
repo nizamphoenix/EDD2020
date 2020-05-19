@@ -11,7 +11,9 @@ In addition, data preparation includes augmentation approaches like flipping ima
 The current approach towards addressing the problem involves utilizing unet+resnet to identify segmentations(affected regions), and hence bounding-boxes(co-ordinates) thereafter.  
 
 Training involved 2 phases: the first utilised 128 x 128 sized images and trained for 20 epochs, and thereafter the weights were saved; the second phase involved training the model on 224 x 224 sized images with weights from the first stage that were stored.  
-This approach currenly gives a score 0.1312, the more the better.  
+This approach currenly gives a score 0.1312, the more the better. The following are the results obtained where the first column contains original images, the second contains true annotation, and the third contains predictions.  
+The color signifies the correctness of annotation-- among BE,suspicious,HGD,polyp,cancer.
+
 Here are the results  
 ![Image description](./img.png)
 
