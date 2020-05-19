@@ -12,4 +12,7 @@ The current approach towards addressing the problem involves utilizing unet+resn
 
 Training involved 2 phases: the first utilised 128 x 128 sized images and trained for 20 epochs, and thereafter the weights were saved; the second phase involved training the model on 224 x 224 sized images with weights from the first stage that were stored.  
 This approach currenly gives a score 0.1312, the more the better.  
+Here are the results  
+![Image description](./img.png)
+
 Further improvements include using self-supervised learning to improve training.
