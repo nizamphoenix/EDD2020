@@ -4,7 +4,7 @@ Endoscopy is a widely used clinical procedure for the early etection of cancers 
 The EDD2020 proposes a rich consolidated dataset from various leading research institues on cancer, under the supervision of cancer experts in collaboration with University of Oxford. This dataset not only focusses on just polyp detection but also on several other malignant tissues, leading to multi-class disease detection and segmentation challenge in clinical endoscopy. This challenge aims to establish a comprehensive dataset to benchmark algorithms for disease detection in endoscopy.  
 Please refer [this](https://edd2020.grand-challenge.org/)  for details.  
 
-### Approach
+### Approach.
 This is a semantic segmentation task where an image can belong to either of the 5 labels: BE, suspicious, HGD, polyp, cancer.
 
 The data preparation stage involves resizing erratic & irregular sized images to 224 x 224 size using [this script](https://evigio.com/post/resizing-images-into-squares-with-opencv-and-python).  
@@ -12,10 +12,16 @@ In addition, data preparation includes augmentation approaches like flipping ima
 
 The current approach towards addressing the problem involves utilizing unet+resnet to identify segmentations(affected regions), and hence bounding-boxes(co-ordinates) thereafter.  
 
-Training involved 2 phases: the first utilised 128 x 128 sized images and trained for 20 epochs, and thereafter the weights were saved; the second phase involved training the model on 224 x 224 sized images with weights from the first stage that were stored.  
+Training involved 2 phases: the first utilised 128 x 128 sized images and trained for 20 epochs, and thereafter the weights were saved; the second phase involved training the model on 224 x 224 sized images with weights from the first stage that were stored. Further improvements include using self-supervised learning to improve training.
+
+
+### Result.
 This approach currenly gives a score 0.1312, the more the better. The following are the results obtained where the first column contains original images, the second contains true annotation, and the third contains predictions.  
 The color signifies the correctness of annotation-- among BE,suspicious,HGD,polyp,cancer.
 
 ![Image description](./img.png)
-
-Further improvements include using self-supervised learning to improve training.
+### Tasks.  
+- [x] ResU-Net
+- [x] ResU-Net++
+- [ ] RU-Net
+- [ ] [R2U-Net](https://paperswithcode.com/paper/recurrent-residual-convolutional-neural)
