@@ -28,3 +28,4 @@ It seems that my model is correctly predicting the disease(color), however it ne
 - [x] ResU-Net++
 - [ ] RU-Net
 - [ ] [R2U-Net](https://paperswithcode.com/paper/recurrent-residual-convolutional-neural)
+- [ ] [SE-ResNeXT + U-Net](https://kits.lib.umn.edu/wp-content/uploads/2019/11/lancerlian_1.pdf)
