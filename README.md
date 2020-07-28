@@ -20,7 +20,7 @@ Training involved 2 phases: the first utilised 128 x 128 sized images and traine
 #### Result.
 This approach currenly gives a score 0.1312, the more the better. The following are the results obtained where the first column contains original images, the second contains true annotation, and the third contains predictions.  
 
-It seems that my model is correctly predicting the disease(color), however it needs to improve in predicting the regions affected(outline); also it was observed that this often happens with diseases other than BE(cyan) & polyp(yellow), perhaps because data regarding other diseases (suspicious,cancer,HGD) is less as compared to BE & polyp.  
+It seems that the model is correctly predicting the disease(color), however it needs improvement in the segmentation task(predicting correct shape); also it was  observed that this often happens with diseases other than BE(cyan) & polyp(yellow), perhaps because data regarding other diseases (suspicious,cancer,HGD) is less as compared to BE & polyp.  
 
 ![Image description](./img.png)
 #### Tasks.  
